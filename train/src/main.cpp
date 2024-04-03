@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-float distance = 0;
+float distance_speed[2] = {0,0};
 float speed = 0;
 
 void setup() {
@@ -8,6 +8,10 @@ void setup() {
 }
 
 void loop() {
-  Serial.println("|");
+  Serial.print(distance_speed[0]);
+  Serial.print(",");
+  Serial.println(distance_speed[1]);
   delay(1000);
+  distance_speed[0]++;
+  distance_speed[1]++;
 }

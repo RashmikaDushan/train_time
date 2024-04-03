@@ -1,23 +1,17 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 
 
 <html>
 
 <head>
     <title>Train Arrival</title>
+    <link rel="stylesheet" href="index.css">
 </head>
 
 
 <body>
-    
-    <h1>Enter train data</h1>
-    <form id="data-form">
-        <input type="text" id="input-distance" name="input-distance" placeholder="Enter distance">
-        <input type="text" id="input-speed" name="input-speed" placeholder="Enter speed">
-        <button type="submit">Enter</button>
-    </form>
 
-    <h1 id="data-heading">Train Arrival</h1>
+    <h1 id="data-heading" class="data-heading">Train Arrival</h1>
     <p id="data"></p>
 
     <script>
@@ -36,27 +30,26 @@
                 .then(data => updateData(data.value))
                 .catch(error => console.error('Error:', error));
         }
-
-        function sendData(event) {
-            event.preventDefault();
-            const formData = new FormData(document.getElementById('data-form'));
-            const inputDistance = formData.get('input-distance');
-            const inputSpeed = formData.get('input-speed');
-            fetch('/send_data', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ distance: inputDistance , speed: inputSpeed})
-            })
-                .then(() => console.log('Data sent successfully'))
-                .catch(error => console.error('Error:', error));
-        }
-
-        document.getElementById('data-form').addEventListener('submit', sendData);
         setInterval(fetchData, 1000);
         fetchData();
     </script>
 </body>
 
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Styling Example</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to CSS Styling Example</h1>
+        <p>This is an example HTML file with CSS styling.</p>
+        <a href="#" class="btn">Click me!</a>
+    </div>
+</body>
 </html>
