@@ -14,4 +14,7 @@ void loop() {
   delay(1000);
   distance_speed[0]++;
   distance_speed[1]++;
+  if(distance_speed[0]==5){
+    distance_speed[0]=0;
+  }
 }

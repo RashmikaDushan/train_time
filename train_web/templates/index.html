@@ -1,11 +1,11 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 
 
 <html>
 
 <head>
     <title>Train Arrival</title>
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 
 
@@ -20,7 +20,7 @@
                 document.getElementById('data').innerText = "Train will be arrived in "+ newData +" minutes";
             }
             else{
-                document.getElementById('data').innerText = "Enable to connect to the controller...";
+                document.getElementById('data').innerText = "Train arrived!";
             }
         }
 
@@ -34,22 +34,3 @@
         fetchData();
     </script>
 </body>
-
-</html> -->
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSS Styling Example</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="container">
-        <h1>Welcome to CSS Styling Example</h1>
-        <p>This is an example HTML file with CSS styling.</p>
-        <a href="#" class="btn">Click me!</a>
-    </div>
-</body>
-</html>

@@ -2,6 +2,8 @@ from flask import Flask, render_template, jsonify
 import serial
 import time
 
+app = Flask(__name__, static_url_path='/static', static_folder='static')
+
 arrival_time = 0
 
 app = Flask(__name__)
@@ -28,10 +30,14 @@ def get_data():
         if len(elements) == 2:
             distance = float(elements[0])
             speed = float(elements[1])
-            arrival_time = distance/speed
-            arrival_time = "{:.2f}".format(arrival_time)  # Format to 2 decimal places
+            if(distance==0):
+                arrival_time = -1
+            else:
+                arrival_time = distance/speed
+                arrival_time = "{:.2f}".format(arrival_time)  # Format to 2 decimal places
             return jsonify({'value': arrival_time})
         else:
+
             return jsonify({'error': 'Invalid data format from Arduino'})
     except serial.SerialException as e:
         return jsonify({'error': str(e)})
