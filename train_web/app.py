@@ -1,46 +1,52 @@
-from flask import Flask, render_template, jsonify
-import serial
-import time
+from flask import Flask, render_template, jsonify, request
+import time  # Import time for potential delays (optional)
 
 app = Flask(__name__, static_url_path='/static', static_folder='static')
 
-arrival_time = 0
+arrival_time = 0  # Initialize arrival_time outside of a function
+trainid = 0
+latitude = 0
+longitude = 0
+speed = 0
 
-app = Flask(__name__)
 
-def read_serial_data(serial_port):
-    data_buffer = b''
-    while not data_buffer.endswith(b'\n'):
-        data_buffer += serial_port.read()
-    return data_buffer.decode().strip()
+def create_vehicle_data(vehicle_id, gps_data):
+  return {
+      "name": f"Vehicle {vehicle_id + 1}",  # Add "Vehicle " and increment ID
+      "latitude": gps_data[0],
+      "longitude": gps_data[1],
+      "speed": gps_data[2]
+  }
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
+@app.route('/data', methods=['POST'])
+def receive_data():
+    data = request.get_json()
+    if data is not None:
+        global trainid
+        global latitude
+        global longitude
+        global speed
+        global arrival_time
+        trainid = data.get('id')
+        latitude = data.get('lat') 
+        longitude = data.get('lng')
+        speed = data.get('speed')
+        arrival_time = data.get('speed')
+        print(f"Received value: {trainid} , {latitude} , {longitude} , {speed} ")
+        return jsonify({'message': 'Data received successfully'}), 200
+    else:
+        return jsonify({'error': 'Invalid JSON data'}), 400
+
 @app.route('/get_data')
 def get_data():
-    try:
-        arduino = serial.Serial('/dev/cu.usbmodem11101', 9600)  # Update the port as needed
-        time.sleep(1)  # Add a delay to match the Arduino's data transmission rate
-        data = read_serial_data(arduino)
-        arduino.close()
-        elements = data.split(',') # Split the data into two elements using the ',' separator
-        print(elements)
-        if len(elements) == 2:
-            distance = float(elements[0])
-            speed = float(elements[1])
-            if(distance==0):
-                arrival_time = -1
-            else:
-                arrival_time = distance/speed
-                arrival_time = "{:.2f}".format(arrival_time)  # Format to 2 decimal places
-            return jsonify({'value': arrival_time})
-        else:
-
-            return jsonify({'error': 'Invalid data format from Arduino'})
-    except serial.SerialException as e:
-        return jsonify({'error': str(e)})
+    global arrival_time
+    time.sleep(1)
+    print(f"Sent value: {arrival_time}")
+    return jsonify({'value': arrival_time})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5001, debug=True)
