@@ -1,22 +1,34 @@
 from flask import Flask, render_template, jsonify, request
-import time  # Import time for potential delays (optional)
+import time
+import geopy.distance
 
 app = Flask(__name__, static_url_path='/static', static_folder='static')
 
-arrival_time = 0  # Initialize arrival_time outside of a function
+arrival_time = 0
 trainid = 0
 latitude = 0
 longitude = 0
 speed = 0
 
+station = (6.932832, 79.828001)
 
-def create_vehicle_data(vehicle_id, gps_data):
-  return {
-      "name": f"Vehicle {vehicle_id + 1}",  # Add "Vehicle " and increment ID
-      "latitude": gps_data[0],
-      "longitude": gps_data[1],
-      "speed": gps_data[2]
-  }
+def googledistance(startingpoint,userlocation):
+    if startingpoint == "Not -Yet startted":
+        return {"hours":0,"minutes":0}
+    origin = Locations.objects.get(name=startingpoint).geographic_location
+    destination = userlocation
+    url = f"https://maps.googleapis.com/maps/api/directions/json?origin={origin}&destination={destination}&mode={mode}&alternatives=false&avoid=tolls&key={key}"
+    response = requests.request("GET", url, headers=headers, data=payload)
+    jsoned_data = json.loads(response.text)
+    duration =  jsoned_data["routes"][0]["legs"][0]["duration"]["text"]
+    list_duration = duration.split(" ")
+    if len(list_duration) == 2:
+        hours = 0
+        minutes = list_duration[0]
+    elif len(list_duration) == 4:
+        hours = list_duration[0]
+        minutes = list_duration[2]
+    return {"hours":hours,"minutes":minutes}
 
 @app.route('/')
 def index():
@@ -31,11 +43,15 @@ def receive_data():
         global longitude
         global speed
         global arrival_time
+        global station
         trainid = data.get('id')
         latitude = data.get('lat') 
         longitude = data.get('lng')
         speed = data.get('speed')
-        arrival_time = data.get('speed')
+        train_location = (latitude, longitude)
+        distance = geopy.distance.geodesic(train_location, station).km
+        print(f"Distance: {distance}")
+        arrival_time = distance / speed
         print(f"Received value: {trainid} , {latitude} , {longitude} , {speed} ")
         return jsonify({'message': 'Data received successfully'}), 200
     else:

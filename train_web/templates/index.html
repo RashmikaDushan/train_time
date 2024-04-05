@@ -18,8 +18,8 @@
     <script>
         function updateUI(trainID,latitude,longitude,speed,arrivalTime) {
             if (arrivalTime != -1) {
-                document.getElementById('data').innerText = "Train with ID "+trainID+" will be arrived in " + arrivalTime + " minutes";
-                document.getElementById('data1').innerText = "Train location : latitude " + latitude + " longitude "+longitude+" speed "+speed;
+                document.getElementById('data').innerText = "Train with ID "+trainID+" will be arrived in " + Math.floor(arrivalTime) + " hours "+Math.floor((arrivalTime*60)%60)+" minutes";
+                document.getElementById('data1').innerText = "Train location : latitude " + latitude + " longitude "+longitude+" speed "+speed+" km/h";
             }
             else {
                 document.getElementById('data').innerText = "Train arrived!";
