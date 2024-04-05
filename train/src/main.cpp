@@ -17,9 +17,9 @@ struct GPSData {
   bool isValid;
 };
 
-const char* ssid = "Galaxy M11126f";  // Your wifi SSID
-const char* password = "agcn7714";  // Your wifi password
-const char* serverIp = "192.168.174.36"; // Replace with your laptop's IP address
+const char* ssid = "Galaxy";  // Your wifi SSID
+const char* password = "HelloWorld";  // Your wifi password
+const char* serverIp = "192.168.222.36"; // Replace with your laptop's IP address
 const int port = 5001; // Port number of your Flask backend
 
 const char* trainiId = "1234";  // Train ID
@@ -62,7 +62,6 @@ void setup_wifi() {
 
 void http_send(String jsonData){
   WiFiClient client;
-  WiFiSecure
   HTTPClient http;
  
   Serial.print("Sending data: ");

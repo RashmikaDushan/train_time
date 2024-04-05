@@ -9,26 +9,9 @@ trainid = 0
 latitude = 0
 longitude = 0
 speed = 0
+distance = 0
 
-station = (6.932832, 79.828001)
-
-def googledistance(startingpoint,userlocation):
-    if startingpoint == "Not -Yet startted":
-        return {"hours":0,"minutes":0}
-    origin = Locations.objects.get(name=startingpoint).geographic_location
-    destination = userlocation
-    url = f"https://maps.googleapis.com/maps/api/directions/json?origin={origin}&destination={destination}&mode={mode}&alternatives=false&avoid=tolls&key={key}"
-    response = requests.request("GET", url, headers=headers, data=payload)
-    jsoned_data = json.loads(response.text)
-    duration =  jsoned_data["routes"][0]["legs"][0]["duration"]["text"]
-    list_duration = duration.split(" ")
-    if len(list_duration) == 2:
-        hours = 0
-        minutes = list_duration[0]
-    elif len(list_duration) == 4:
-        hours = list_duration[0]
-        minutes = list_duration[2]
-    return {"hours":hours,"minutes":minutes}
+station = (6.932832, 79.828001) # Enter the coordinates of the Train Station
 
 @app.route('/')
 def index():
@@ -44,6 +27,7 @@ def receive_data():
         global speed
         global arrival_time
         global station
+        global distance
         trainid = data.get('id')
         latitude = data.get('lat') 
         longitude = data.get('lng')
@@ -62,7 +46,7 @@ def get_data():
     global arrival_time
     time.sleep(1)
     print(f"Sent value: {trainid} , {latitude} , {longitude} , {speed} , {arrival_time} ")
-    return jsonify({'trainId': trainid , 'latitude': latitude , 'longitude':longitude , 'speed':speed , 'arrival_time':arrival_time})
+    return jsonify({'trainId': trainid , 'latitude': latitude , 'longitude':longitude , 'speed':speed , 'arrival_time':arrival_time , 'distance':distance})
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001, debug=True)
+    app.run(host='0.0.0.0', port=5001, debug=True)  # Enter Host IP and port

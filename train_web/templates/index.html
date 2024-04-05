@@ -6,20 +6,25 @@
 <head>
     <title>Train Arrival</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 </head>
 
 
 <body>
 
     <h1 id="data-heading" class="data-heading">Train Arrival</h1>
-    <p id="data"></p>
-    <p id="data1"></p>
+    <p id="data" class="arrivalTime"></p>
+    <p id="data1" class="location"></p>
+    <p id="data2" class="distance"></p>
 
     <script>
-        function updateUI(trainID,latitude,longitude,speed,arrivalTime) {
+        function updateUI(trainID,latitude,longitude,speed,arrivalTime,distance) {
             if (arrivalTime != -1) {
-                document.getElementById('data').innerText = "Train with ID "+trainID+" will be arrived in " + Math.floor(arrivalTime) + " hours "+Math.floor((arrivalTime*60)%60)+" minutes";
-                document.getElementById('data1').innerText = "Train location : latitude " + latitude + " longitude "+longitude+" speed "+speed+" km/h";
+                document.getElementById('data').innerText = "Train with TrainID "+trainID+" will be arrived in " + Math.floor(arrivalTime) + " hours "+Math.floor((arrivalTime*60)%60)+" minutes";
+                document.getElementById('data1').innerText = "Train is at latitude : " + latitude + " longitude : "+longitude;
+                document.getElementById('data2').innerText = "Speed "+speed+" km/h "+"| Distance "+distance+" km";
             }
             else {
                 document.getElementById('data').innerText = "Train arrived!";
@@ -36,14 +41,16 @@
                     const longitude = data.longitude;
                     const speed = data.speed;
                     const arrivalTime = data.arrival_time;
+                    const distance = data.distance;
 
                     console.log('Train ID:', train);
                     console.log('latitude:', latitude);
                     console.log('longitude:', longitude);
                     console.log('Speed:', speed);
                     console.log('Arrival Time:', arrivalTime);
+                    console.log('Distance:', distance);
 
-                    updateUI(train,latitude,longitude,speed,arrivalTime);
+                    updateUI(train,latitude,longitude,speed,arrivalTime,distance);
                 })
                 .catch(error => console.error('Error:', error));
         }
