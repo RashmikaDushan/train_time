@@ -13,13 +13,15 @@
 
     <h1 id="data-heading" class="data-heading">Train Arrival</h1>
     <p id="data"></p>
+    <p id="data1"></p>
 
     <script>
-        function updateData(newData) {
-            if(newData!=-1){
-                document.getElementById('data').innerText = "Train will be arrived in "+ newData +" minutes";
+        function updateUI(trainID,latitude,longitude,speed,arrivalTime) {
+            if (arrivalTime != -1) {
+                document.getElementById('data').innerText = "Train with ID "+trainID+" will be arrived in " + arrivalTime + " minutes";
+                document.getElementById('data1').innerText = "Train location : latitude " + latitude + " longitude "+longitude+" speed "+speed;
             }
-            else{
+            else {
                 document.getElementById('data').innerText = "Train arrived!";
             }
         }
@@ -27,9 +29,25 @@
         function fetchData() {
             fetch('/get_data')
                 .then(response => response.json())
-                .then(data => updateData(data.value))
+                .then(data => {
+                    
+                    const train = data.trainId;
+                    const latitude = data.latitude;
+                    const longitude = data.longitude;
+                    const speed = data.speed;
+                    const arrivalTime = data.arrival_time;
+
+                    console.log('Train ID:', train);
+                    console.log('latitude:', latitude);
+                    console.log('longitude:', longitude);
+                    console.log('Speed:', speed);
+                    console.log('Arrival Time:', arrivalTime);
+
+                    updateUI(train,latitude,longitude,speed,arrivalTime);
+                })
                 .catch(error => console.error('Error:', error));
         }
+
         setInterval(fetchData, 1000);
         fetchData();
     </script>

@@ -45,8 +45,8 @@ def receive_data():
 def get_data():
     global arrival_time
     time.sleep(1)
-    print(f"Sent value: {arrival_time}")
-    return jsonify({'value': arrival_time})
+    print(f"Sent value: {trainid} , {latitude} , {longitude} , {speed} , {arrival_time} ")
+    return jsonify({'trainId': trainid , 'latitude': latitude , 'longitude':longitude , 'speed':speed , 'arrival_time':arrival_time})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001, debug=True)
